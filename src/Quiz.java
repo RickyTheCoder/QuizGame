@@ -128,8 +128,18 @@ public class Quiz implements ActionListener {
         answer_labelD.setForeground(new Color(255,50,100));
         answer_labelD.setFont(new Font("Marker Felt",Font.PLAIN,35));
         answer_labelD.setText("Answer 4");
+//set the time left
+seconds_left.setBounds(535,510,100,100);
+seconds_left.setBackground(new Color(25,25,25));
+seconds_left.setForeground(new Color(255,0,0));
+seconds_left.setFont(new Font("Ink Free",Font.BOLD,60));
+seconds_left.setBorder(BorderFactory.createBevelBorder(1));
+seconds_left.setOpaque(true); // revisit
+seconds_left.setHorizontalAlignment(JTextField.CENTER);
+seconds_left.setText(String.valueOf(seconds));
 
 //Inserting them into the frame we made earlier
+        frame.add(seconds_left);
         frame.add(answer_labelA);
         frame.add(answer_labelB);
         frame.add(answer_labelC);
