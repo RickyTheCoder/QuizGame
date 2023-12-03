@@ -129,16 +129,43 @@ public class Quiz implements ActionListener {
         answer_labelD.setFont(new Font("Marker Felt",Font.PLAIN,35));
         answer_labelD.setText("Answer 4");
 //set the time left
-seconds_left.setBounds(535,510,100,100);
-seconds_left.setBackground(new Color(25,25,25));
-seconds_left.setForeground(new Color(255,0,0));
-seconds_left.setFont(new Font("Ink Free",Font.BOLD,60));
-seconds_left.setBorder(BorderFactory.createBevelBorder(1));
-seconds_left.setOpaque(true); // revisit
-seconds_left.setHorizontalAlignment(JTextField.CENTER);
-seconds_left.setText(String.valueOf(seconds));
+        seconds_left.setBounds(535,510,100,100);
+        seconds_left.setBackground(new Color(25,25,25));
+        seconds_left.setForeground(new Color(255,0,0));
+        seconds_left.setFont(new Font("Ink Free",Font.BOLD,60));
+        seconds_left.setBorder(BorderFactory.createBevelBorder(1));
+        seconds_left.setOpaque(true); // revisit
+        seconds_left.setHorizontalAlignment(JTextField.CENTER);
+        seconds_left.setText(String.valueOf(seconds));
+
+        //time label
+        time_label.setBounds(535,475,100,25);
+        time_label.setBackground(new Color(50,50,25));
+        time_label.setForeground(new Color(255,0,0));
+        time_label.setFont(new Font("MV Boli",Font.PLAIN,20));
+        time_label.setHorizontalAlignment(JTextField.CENTER);
+        time_label.setText("timer");
+//display the number of questions got right out of total amount
+        number_right.setBounds(225,225,200,100);
+        number_right.setBackground(new Color(25,25,25));
+        number_right.setForeground(new Color(25,255,0));
+        number_right.setFont(new Font("Ink Free",Font.BOLD,50));
+        number_right.setBorder(BorderFactory.createBevelBorder(1));
+        number_right.setHorizontalAlignment(JTextField.CENTER);
+        number_right.setEditable(false);
+//display label that displays percentage right
+        percentage.setBounds(225,325,200,100);
+        percentage.setBackground(new Color(25,25,25));
+        percentage.setForeground(new Color(25,255,0));
+        percentage.setFont(new Font("Ink Free",Font.BOLD,50));
+        percentage.setBorder(BorderFactory.createBevelBorder(1));
+        percentage.setHorizontalAlignment(JTextField.CENTER);
+        percentage.setEditable(false);
 
 //Inserting them into the frame we made earlier
+        //frame.add(number_right);
+       //frame.add(percentage);
+        frame.add(time_label);
         frame.add(seconds_left);
         frame.add(answer_labelA);
         frame.add(answer_labelB);
@@ -151,16 +178,61 @@ seconds_left.setText(String.valueOf(seconds));
         frame.add(textarea);
         frame.add(textfiled);
         frame.setVisible(true);
+        nextQuestion();
     }
 
     // this method allows us to move to the next question
     public void nextQuestion() {
-
+        if(index >= total_questions){
+            results();
+        }
+        else{
+            textfiled.setText("Question " + (index + 1));
+            //whenever we increase our index it will retrieve our next question and recall next-
+            //question method
+            textarea.setText(questions[index]);
+            answer_labelA.setText(options[index][0]);
+            answer_labelB.setText(options[index][1]);
+            answer_labelC.setText(options[index][2]);
+            answer_labelD.setText(options[index][3]);
+        }
     }
 
     // this method will deal with any button clicking
     @Override
     public void actionPerformed(ActionEvent e) {
+        buttonA.setEnabled(false);
+        buttonB.setEnabled(false);
+        buttonC.setEnabled(false);
+        buttonD.setEnabled(false);
+        //determine which button is being pressed and match to see if thats the
+        // array of answers that matches what we have
+        if(e.getSource()==buttonA){
+            answer = 'A';
+            if(answer == answers[index]){  //you choose A and if A matches the answer then correct guesses incteases by 1
+                correct_guesses++;
+            }
+        }
+        if(e.getSource()==buttonB){
+            answer = 'B';
+            if(answer == answers[index]){
+                correct_guesses++;
+            }
+        }
+        if(e.getSource()==buttonC){
+            answer = 'C';
+            if(answer == answers[index]){
+                correct_guesses++;
+            }
+        }
+        if(e.getSource()==buttonD){
+            answer = 'D';
+            if(answer == answers[index]){
+                correct_guesses++;
+            }
+        }
+        //now call the display answer method
+        displayAnswer();
 
     }
 
