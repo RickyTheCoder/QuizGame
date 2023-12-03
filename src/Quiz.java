@@ -12,18 +12,21 @@ public class Quiz implements ActionListener {
             "What is the name of the professor for COMP 170 section 003?",
             "When is the last day of the semester?",
             "What is the name of this course?"
+            //add quote question then refer to options
     };
     // 2D array of strings that holds all the different possibilities of answers for all the different questions
     String[][] options = {
             {"Professor Yacobellis", "Professor Joe", "Professor Honig", "Professor Younis"},
             {"October 16th", "November 16th", "December 16th", "I don't know!"},
             {"Organic Chemistry", "Objected Oriented Programming", "Biology", "Calculus"}
+            //add new array of options
     };
     // array of strings that holds all the different correct answers for all the different questions
     char[] answers = {
             'A',
             'C',
             'B'
+            //add new answer
     };
     // declaring a char data type that holds the guess
     char guess;
@@ -51,6 +54,19 @@ public class Quiz implements ActionListener {
     JLabel seconds_left = new JLabel(); // functions as display for count down timer
     JTextField number_right = new JTextField(); // displays the number
     JTextField percentage = new JTextField(); // displays percentage of score
+    //create the actual countdown timer
+    Timer timer = new Timer(1000, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //after each second, set seconds variable decremented by 1
+            seconds--;
+            seconds_left.setText(String.valueOf(seconds));
+            //if timer hits 0 skip
+            if(seconds <=0){
+                displayAnswer();
+            }
+        }
+    });
 
 
     // below is the constructor
@@ -104,28 +120,28 @@ public class Quiz implements ActionListener {
         buttonD.setFocusable(false);
         buttonD.addActionListener(this);
         buttonD.setText("D");
-
+//changing color from light red (255,50,100) to green (25,255,0)
         answer_labelA.setBounds(125,100,500,100);
         answer_labelA.setBackground(new Color(20,100,200));
-        answer_labelA.setForeground(new Color(255,50,100));
+        answer_labelA.setForeground(new Color(25,255,0));
         answer_labelA.setFont(new Font("Marker Felt",Font.PLAIN,35));
         answer_labelA.setText("Answer 1");
 
         answer_labelB.setBounds(125,200,500,100);
         answer_labelB.setBackground(new Color(20,100,200));
-        answer_labelB.setForeground(new Color(255,50,100));
+        answer_labelB.setForeground(new Color(25,255,0));
         answer_labelB.setFont(new Font("Marker Felt",Font.PLAIN,35));
         answer_labelB.setText("Answer 2");
 
         answer_labelC.setBounds(125,300,500,100);
         answer_labelC.setBackground(new Color(20,100,200));
-        answer_labelC.setForeground(new Color(255,50,100));
+        answer_labelC.setForeground(new Color(25,255,0));
         answer_labelC.setFont(new Font("Marker Felt",Font.PLAIN,35));
         answer_labelC.setText("Answer 3");
 
         answer_labelD.setBounds(125,400,500,100);
         answer_labelD.setBackground(new Color(20,100,200));
-        answer_labelD.setForeground(new Color(255,50,100));
+        answer_labelD.setForeground(new Color(25,255,0));
         answer_labelD.setFont(new Font("Marker Felt",Font.PLAIN,35));
         answer_labelD.setText("Answer 4");
 //set the time left
@@ -195,6 +211,7 @@ public class Quiz implements ActionListener {
             answer_labelB.setText(options[index][1]);
             answer_labelC.setText(options[index][2]);
             answer_labelD.setText(options[index][3]);
+            timer.start();
         }
     }
 
@@ -238,12 +255,75 @@ public class Quiz implements ActionListener {
 
     // this method will display the correct answer
     public void displayAnswer() {
+        timer.stop();
+        buttonA.setEnabled(false);
+        buttonB.setEnabled(false);
+        buttonC.setEnabled(false);
+        buttonD.setEnabled(false);
+        //if answers are wrong, make red and dont count it
+        if(answers[index] != 'A'){
+            answer_labelA.setForeground(new Color(255,0,0));
+        }
+        if(answers[index] != 'B'){
+            answer_labelB.setForeground(new Color(255,0,0));
+        }
+        if(answers[index] != 'C'){
+            answer_labelC.setForeground(new Color(255,0,0));
+        }
+        if(answers[index] != 'D'){
+            answer_labelD.setForeground(new Color(255,0,0));
+        }
 
+        //note the right answer doesnt turn green it just stays the same
+        //following timer is a delay from red color back to original color
+        Timer pause = new Timer(2000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //when timer reaches 2 seconds perform whatever is in here which reverts color and proceeds to next question
+                answer_labelA.setForeground(new Color(25,255,0));
+                answer_labelB.setForeground(new Color(25,255,0));
+                answer_labelC.setForeground(new Color(25,255,0));
+                answer_labelD.setForeground(new Color(25,255,0));
+                //reset answer
+                answer = ' ';
+                seconds = 10;
+                seconds_left.setText(String.valueOf(seconds));
+                buttonA.setEnabled(true);
+                buttonB.setEnabled(true);
+                buttonC.setEnabled(true);
+                buttonD.setEnabled(true);
+                //increase index by 1 to go next question
+                index++;
+                nextQuestion();
+            }
+        });
+        //start timer and make sure the actionperformed method executes once
+        pause.setRepeats(false);
+        pause.start();
     }
 
     // this method will display the final results
     public void results() {
+        //disable all buttons so quiz can be terminated at the end
+        buttonA.setEnabled(false);
+        buttonB.setEnabled(false);
+        buttonC.setEnabled(false);
+        buttonD.setEnabled(false);
+        //calculate results
+        result = (int)((correct_guesses/(double)total_questions)*100);
+        textfiled.setText("RESULTS!");
+        textarea.setText("");
+        answer_labelA.setText("");
+        answer_labelB.setText("");
+        answer_labelC.setText("");
+        answer_labelD.setText("");
 
+        //display correct guesses
+        number_right.setText("("+correct_guesses+"/"+total_questions+")");
+        percentage.setText(result+"%");
+
+        frame.add(percentage);
+        frame.add(number_right);
     }
 
 }
