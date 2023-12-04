@@ -11,21 +11,29 @@ public class Quiz implements ActionListener {
     String[] questions = {
             "What is the name of the professor for COMP 170 section 003?",
             "When is the last day of the semester?",
-            "What is the name of this course?"
+            "What is the name of this course?",
+            "What is the default value of a variable of type 'int' in Java?",
+            "Which company first developed Java?"
+            
             //add quote question then refer to options
     };
     // 2D array of strings that holds all the different possibilities of answers for all the different questions
     String[][] options = {
             {"Professor Yacobellis", "Professor Joe", "Professor Honig", "Professor Younis"},
             {"October 16th", "November 16th", "December 16th", "I don't know!"},
-            {"Organic Chemistry", "Objected Oriented Programming", "Biology", "Calculus"}
+            {"Organic Chemistry", "Objected Oriented Programming", "Biology", "Calculus"},
+            {"0", "1", "2", "-5"},
+            {"Microsoft", "IBM", "Sun Microsystems", "Apple"}
+        
             //add new array of options
     };
     // array of strings that holds all the different correct answers for all the different questions
     char[] answers = {
             'A',
             'C',
-            'B'
+            'B',
+            'A',
+            'C'
             //add new answer
     };
     // declaring a char data type that holds the guess
